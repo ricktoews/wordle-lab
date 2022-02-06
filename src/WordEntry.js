@@ -124,11 +124,12 @@ console.log('submitAttempt isComplete', isComplete(pattern));
 
 	    { (word.length === 5 && guesses.length > 0) && (
 	    <div className="guess-list">
-	    { guesses.map((guess, ndx) => <WordWithControls key={ndx} poolSize={poolSize[ndx]} word={guess} submitAttempt={submitAttempt} final={ndx === guesses.length - 1} /> ) }
+	    { guesses.map((guess, ndx) => <WordWithControls key={ndx} poolSize={poolSize[ndx]} word={word} guess={guess} submitAttempt={submitAttempt} final={ndx === guesses.length - 1} /> ) }
 	    </div>
 	    ) }
           </div>
 
+	{/* Overlay for end of round */}
           <div className={'wrap-overlay ' + overlayStatus}>
             <div className="overlay">
               <p>Completed in {patterns.length} attempts.</p>
@@ -141,6 +142,8 @@ console.log('submitAttempt isComplete', isComplete(pattern));
               </div>
             </div>
           </div>
+	{/* End Overlay for end of round */}
+
 	</div>
 	);
 }

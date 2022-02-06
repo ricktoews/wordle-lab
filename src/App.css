@@ -135,35 +135,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  width: 20px;
   height: 20px;
-/*  border-radius: 50%;*/
+  margin: 2px;
+  border-radius: 50%;
   cursor: pointer;
+}
+.wrap-letter-control .btn:hover {
+  border: 1px solid black;
 }
 
 /* .green-btn, .gray-btn, .yellow-btn apply to the specific button colors. */
 .green-button {
-  background-color: #98fb98;
-}
-
-.green-button:hover {
-  background-color: gray;
+  background-color: #6af76f;
 }
 
 .gray-button {
   background-color: #cccccc;
 }
 
-.gray-button:hover {
-  background-color: gray;
-}
-
 .yellow-button {
-  background-color: #ffff00;
-}
-
-.yellow-button:hover {
-  background-color: gray;
+  background-color: #fffa59;
 }
 
 

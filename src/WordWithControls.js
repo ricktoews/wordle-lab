@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 import LetterControls from './LetterControls';
 import PatternEntry from './PatternEntry';
+import { getGreenYellowPattern } from './utils/word-tools';
 
 function WordWithControls(props) {
-	const [letters, setLetters] = useState(props.word.split(''));
+	const [letters, setLetters] = useState(props.guess.split(''));
 	const [pattern, setPattern] = useState(['-', '-', '-', '-', '-']);
 	const [pool, setPool] = useState(props.initialPool);
 	const [clearExcept, setClearExcept] = useState();
+
+	useEffect(() => {
+		if (props.final) {
+let _p = getGreenYellowPattern(props.word, props.guess);
+console.log(props.word, props.guess, _p);
+setPattern(_p);
+		}
+	}, []);
 
 	function isComplete(p) {
 		var statuses = p.filter(item => item !== 'G');
@@ -24,7 +33,7 @@ function WordWithControls(props) {
 	}
 
 	const submitPattern = e => {
-//		var guess = props.word;
+//		var guess = props.guess;
 		props.submitAttempt(pattern);
 	}
 

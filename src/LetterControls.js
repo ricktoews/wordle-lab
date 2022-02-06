@@ -41,7 +41,14 @@ function LetterControls(props) {
 		props.setEvaluation(evalData);
 	}
 
-	const handleLetterHover = e => {
+	const handleLetterLeave = e => {
+		var classList = Array.from(e.target.classList);
+		if (classList.indexOf('wrap-letter') !== -1) {
+			let t = setTimeout(hideStatusButtons, 500);
+		}
+	}
+
+	const handleLetterEnter = e => {
 		props.clearStatusButtons(props.position);
 		wrapLetterButtons.current.classList.remove('hide');
 		wrapLetterButtons.current.classList.add('show');
@@ -59,7 +66,7 @@ function LetterControls(props) {
 	    )}
 
 	    {props.final ? (
-	      <div className="wrap-letter" onMouseOver={handleLetterHover}><div className="letter">{letter}</div></div>
+	      <div className="wrap-letter" onMouseLeave={handleLetterLeave} onMouseEnter={handleLetterEnter}><div className="letter">{letter}</div></div>
 	    ) : (
 	      <div className="wrap-letter"><div className="letter">{letter}</div></div>
 	    ) }

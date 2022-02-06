@@ -1,6 +1,6 @@
 function getGreenYellowPattern(word, guess) {
 	var result = Array(word.length);
-	result.fill('');
+	result.fill('-');
 	var wordLetters = word.split('');
 	var guessLetters = guess.split('');
 
@@ -94,5 +94,5 @@ function getFilteredPool(pool, guess, pattern) {
 }
 
 
-export { checkWord, getFilteredPool };
+export { getGreenYellowPattern, checkWord, getFilteredPool };
 
