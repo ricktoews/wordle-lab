@@ -7,10 +7,10 @@ console.log('words', wordPoolJSON);
 
 function WordEntry() {
 	const [word, setWord] = useState('');
-	const [isUnknown, setIsUnknown] = useState(false);
 	const [currentGuess, setCurrentGuess] = useState('');
 	const [guesses, setGuesses] = useState([]);
 	const [poolSize, setPoolSize] = useState([]);
+	const [isPoolEmpty, setIsPoolEmpty] = useState(false);
 	const [patterns, setPatterns] = useState([]);
 	const [wordPool, setWordPool] = useState(wordPoolJSON.words);
 	const [overlayStatus, setOverlayStatus] = useState('hide');
@@ -22,10 +22,10 @@ function WordEntry() {
 		if (stat !== 'same') {
 			setWord('');
 		}
-		setIsUnknown(false);
 		setCurrentGuess('');
 		setGuesses([]);
 		setPoolSize([]);
+		setIsPoolEmpty(false);
 		setPatterns([]);
 		setWordPool(wordPoolJSON.words);
 		setOverlayStatus('hide');
@@ -49,12 +49,9 @@ function WordEntry() {
 	const handleWordEntry = e => {
 		var el = e.target;
 		var capitalized = el.value.toUpperCase();
-		setIsUnknown(false);
 		setWord(capitalized);
 		if (capitalized.length === 5) {
 			if (wordPool.indexOf(capitalized) === -1) {
-console.log(`I don't actually know this word`, capitalized);
-				setIsUnknown(true);
 				setWord('');
 			}
 		}
@@ -88,8 +85,12 @@ console.log('submitAttempt isComplete', isComplete(pattern));
 		if (isComplete(pattern)) {
 			setOverlayStatus('show');
 		}
-		else {
+		else if (filteredPool.length > 0) {
 			makeGuess(filteredPool);
+		}
+		else {
+			console.log('Something went wrong; no words left.');
+			setIsPoolEmpty(true);
 		}
 	}
 
@@ -107,7 +108,7 @@ console.log('submitAttempt isComplete', isComplete(pattern));
               </div>
     	      <div className="word-entry-field"><label htmlFor="word">Your word</label>: <input type="text" name="word" id="word" value={word} onChange={handleWordEntry} /></div>
 
-	      { isUnknown && (<p>I hate to admit this, but I don't actually know that word.</p>) }
+	      { isPoolEmpty && (<p>There are simply no words for this. Guessing there was an issue in the Green / Yellow selections.</p>) }
 
 	      { word.length === 5 && (
 	      <div className="word-entry">
