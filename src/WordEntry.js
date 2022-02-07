@@ -7,6 +7,7 @@ console.log('words', wordPoolJSON);
 
 function WordEntry() {
 	const [word, setWord] = useState('');
+	const [isUnknown, setIsUnknown] = useState(false);
 	const [currentGuess, setCurrentGuess] = useState('');
 	const [guesses, setGuesses] = useState([]);
 	const [poolSize, setPoolSize] = useState([]);
@@ -21,6 +22,7 @@ function WordEntry() {
 		if (stat !== 'same') {
 			setWord('');
 		}
+		setIsUnknown(false);
 		setCurrentGuess('');
 		setGuesses([]);
 		setPoolSize([]);
@@ -35,16 +37,6 @@ function WordEntry() {
 		return (statuses.length === 0);
 	}
 
-/*
-	function checkComplete(pattern) {
-		var complete = isComplete(pattern);
-		if (complete) {
-			setOverlayStatus('show');
-console.log('checkComplete', pattern);
-		}
-		return complete;
-	}
-*/
 
 	const handleAgainDifferent = () => {
 		reset();		
@@ -57,9 +49,14 @@ console.log('checkComplete', pattern);
 	const handleWordEntry = e => {
 		var el = e.target;
 		var capitalized = el.value.toUpperCase();
+		setIsUnknown(false);
 		setWord(capitalized);
 		if (capitalized.length === 5) {
-			
+			if (wordPool.indexOf(capitalized) === -1) {
+console.log(`I don't actually know this word`, capitalized);
+				setIsUnknown(true);
+				setWord('');
+			}
 		}
 	}
 
@@ -110,6 +107,8 @@ console.log('submitAttempt isComplete', isComplete(pattern));
               </div>
     	      <div className="word-entry-field"><label htmlFor="word">Your word</label>: <input type="text" name="word" id="word" value={word} onChange={handleWordEntry} /></div>
 
+	      { isUnknown && (<p>I hate to admit this, but I don't actually know that word.</p>) }
+
 	      { word.length === 5 && (
 	      <div className="word-entry">
 	        <div id="wrap-target-word">Target word: <span className="target-word">{word}</span></div>
@@ -118,6 +117,10 @@ console.log('submitAttempt isComplete', isComplete(pattern));
                 </div>
               </div>
 	      ) }
+
+          { wordPool.length < 10 && (
+	    <div>{wordPool.join(', ')}</div>
+	  ) }
             </div>
           </div>
           <div className="col">
@@ -134,7 +137,7 @@ console.log('submitAttempt isComplete', isComplete(pattern));
             <div className="overlay">
               <p>Completed in {patterns.length} attempts.</p>
 	      { guesses.map((word, ndx) => <div key={ndx}>{word}</div>) }
-              <p>Results</p>
+              <br/>
 	      <Results patterns={patterns} />
               <div className="wrap-buttons">
                 <button onClick={handleAgainSame}>Again, Same Word</button>
