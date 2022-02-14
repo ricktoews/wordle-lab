@@ -11,9 +11,9 @@ function WordWithControls(props) {
 
 	useEffect(() => {
 		if (props.final) {
-let _p = getGreenYellowPattern(props.word, props.guess);
-console.log(props.word, props.guess, _p);
-setPattern(_p);
+			let _p = getGreenYellowPattern(props.word, props.guess);
+//			console.log(props.word, props.guess, _p);
+			setPattern(_p);
 		}
 	}, []);
 
