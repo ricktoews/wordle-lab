@@ -3,7 +3,12 @@ import WordWithControls from './WordWithControls';
 import Results from './Results';
 import wordFreqPoolJSON from './utils/words.json';
 import { getFilteredPool } from './utils/word-tools';
-const wordObjs = wordFreqPoolJSON.words;
+
+function byFreq(a, b) {
+	return +a.freq > +b.freq ? -1 : 1;
+}
+
+const wordObjs = wordFreqPoolJSON.words.sort(byFreq);
 console.log('words', wordObjs);
 
 function WordEntry() {
@@ -58,10 +63,34 @@ function WordEntry() {
 		}
 	}
 
+	const TOP_PCT = .2;
+	function pickTopWords(pool) {
+		let subsetSize = Math.floor(pool.length * TOP_PCT);
+		var subset = pool.slice(0, subsetSize);
+		if (subset.length === 0) {
+			subset = pool;
+		}
+console.log('pickTopWords: 20% subset', subset);
+console.log('pickTopWords: position of target', word, 'in subset', subset.map(w=>w.word).indexOf(word));
+		var ndx = Math.floor(Math.random() * subset.length);
+		return subset[ndx];
+	}
+
+	/*
+	  Modified to use new function pickTopWords, to take the most popular
+	  n percent (currently set at 20%) words from the pool and select a
+	  random word from those. This, instead of merely choosing a random
+	  word from the entire pool.
+	*/
 	function pickWord(pool) {
+/*
 		var poolSize = pool.length;
 		var ndx = Math.floor(Math.random() * pool.length);
 		var word = pool[ndx].word;
+*/
+		var wordObj = pickTopWords(pool);
+		var word = wordObj.word;
+console.log('picked word, frequency', word, wordObj.freq);
 		return word;
 	}
 
