@@ -9,7 +9,6 @@ function byFreq(a, b) {
 }
 
 const wordObjs = wordFreqPoolJSON.words.sort(byFreq);
-console.log('words', wordObjs);
 
 function WordEntry() {
 	const [word, setWord] = useState('');
@@ -70,8 +69,10 @@ function WordEntry() {
 		if (subset.length === 0) {
 			subset = pool;
 		}
-console.log('pickTopWords: 20% subset', subset);
-console.log('pickTopWords: position of target', word, 'in subset', subset.map(w=>w.word).indexOf(word));
+console.log('pickTopWords, top 20%', subset.length, ': position of target', word, 'in subset', subset.map(w=>w.word).indexOf(word));
+if (subset.length < 10) {
+	subset.forEach(item => { console.log(item.word, item.freq); });
+}
 		var ndx = Math.floor(Math.random() * subset.length);
 		return subset[ndx];
 	}
@@ -143,9 +144,11 @@ console.log('submitAttempt isComplete', isComplete(pattern));
 	      { word.length === 5 && (
 	      <div className="word-entry">
 	        <div id="wrap-target-word">Target word: <span className="target-word">{word}</span></div>
+	        { guesses.length === 0 && (
                 <div className="wrap-button">
 	          Click Start to prompt for the initial guess. <button onClick={start}>Start</button>
                 </div>
+	        ) }
               </div>
 	      ) }
 

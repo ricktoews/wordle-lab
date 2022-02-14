@@ -54,10 +54,13 @@ function LetterControls(props) {
 		wrapLetterButtons.current.classList.add('show');
 	}
 
+	/*
+	  Remove letter buttons, as scoring is done by the app.
+	*/
 	return (
 	<div>
 	  <div className="wrap-letter-control">
-	    {props.final && (
+	    {false && props.final && (
             <div ref={wrapLetterButtons} className="wrap-letter-buttons">
 	      <div className="btn green-button" onClick={handleGreenClick}></div>
 	      <div className="btn gray-button" onClick={handleGrayClick}></div>
@@ -65,7 +68,7 @@ function LetterControls(props) {
 	    </div>
 	    )}
 
-	    {props.final ? (
+	    {false && props.final ? (
 	      <div className="wrap-letter" onMouseLeave={handleLetterLeave} onMouseEnter={handleLetterEnter}><div className="letter">{letter}</div></div>
 	    ) : (
 	      <div className="wrap-letter"><div className="letter">{letter}</div></div>
