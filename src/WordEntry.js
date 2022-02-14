@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import WordWithControls from './WordWithControls';
 import Results from './Results';
-import wordPoolJSON from './utils/five-letter-words.json';
+import wordFreqPoolJSON from './utils/words.json';
 import { getFilteredPool } from './utils/word-tools';
-console.log('words', wordPoolJSON);
+const wordObjs = wordFreqPoolJSON.words;
+console.log('words', wordObjs);
 
 function WordEntry() {
 	const [word, setWord] = useState('');
@@ -12,7 +13,7 @@ function WordEntry() {
 	const [poolSize, setPoolSize] = useState([]);
 	const [isPoolEmpty, setIsPoolEmpty] = useState(false);
 	const [patterns, setPatterns] = useState([]);
-	const [wordPool, setWordPool] = useState(wordPoolJSON.words);
+	const [wordFreqPool, setWordFreqPool] = useState(wordObjs);
 	const [overlayStatus, setOverlayStatus] = useState('hide');
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ function WordEntry() {
 		setPoolSize([]);
 		setIsPoolEmpty(false);
 		setPatterns([]);
-		setWordPool(wordPoolJSON.words);
+		setWordFreqPool(wordFreqPoolJSON.words);
 		setOverlayStatus('hide');
 	}
 
@@ -51,7 +52,7 @@ function WordEntry() {
 		var capitalized = el.value.toUpperCase();
 		setWord(capitalized);
 		if (capitalized.length === 5) {
-			if (wordPool.indexOf(capitalized) === -1) {
+			if (wordFreqPool.map(w=>w.word).indexOf(capitalized) === -1) {
 				setWord('');
 			}
 		}
@@ -60,7 +61,7 @@ function WordEntry() {
 	function pickWord(pool) {
 		var poolSize = pool.length;
 		var ndx = Math.floor(Math.random() * pool.length);
-		var word = pool[ndx];
+		var word = pool[ndx].word;
 		return word;
 	}
 
@@ -79,8 +80,8 @@ function WordEntry() {
 		let _patterns = patterns.slice(0);
 		_patterns.push(pattern);
 		setPatterns(_patterns);
-		var filteredPool = getFilteredPool(wordPool, currentGuess, pattern);
-		setWordPool(filteredPool);
+		var filteredPool = getFilteredPool(wordFreqPool, currentGuess, pattern);
+		setWordFreqPool(filteredPool);
 console.log('submitAttempt isComplete', isComplete(pattern));
 		if (isComplete(pattern)) {
 			setOverlayStatus('show');
@@ -96,7 +97,7 @@ console.log('submitAttempt isComplete', isComplete(pattern));
 
 	const start = e => {
 		console.log('Start picking!');
-		makeGuess(wordPool);
+		makeGuess(wordFreqPool);
 	}
 
 	return (
@@ -119,8 +120,8 @@ console.log('submitAttempt isComplete', isComplete(pattern));
               </div>
 	      ) }
 
-          { wordPool.length < 10 && (
-	    <div>{wordPool.join(', ')}</div>
+          { wordFreqPool.length < 10 && (
+	    <div>{wordFreqPool.map(w=>w.word).join(', ')}</div>
 	  ) }
             </div>
           </div>

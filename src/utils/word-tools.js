@@ -85,9 +85,9 @@ function checkWord(poolWord, guessWord, pattern) {
 
 function getFilteredPool(pool, guess, pattern) {
 	var filteredPool = [];
-	pool.forEach((word, ndx) => {
-		if (checkWord(word, guess, pattern)) {
-			filteredPool.push(word);
+	pool.forEach((wordObj, ndx) => {
+		if (checkWord(wordObj.word, guess, pattern)) {
+			filteredPool.push(wordObj);
 		}
 	});
 	return filteredPool;
